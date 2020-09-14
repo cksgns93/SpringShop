@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tis.mapper.ProductMapper">
+	<!-- pspec별로 상품정보 가져오기 -->
+	<select id="selectByPspec" parameterType="string" resultType="Product">
+		select <include refid="product_column"/> from product where pspec=#{value} order by pnum desc
+	</select>
+	<!-- 상위 카테고리 목록 가져오기 -->
+	<!-- <select id="getUpCategoryList" resultType="Category">
+		select * from upCategory order by upCg_code asc
+	</select>
+	
+	<select id="getDownCategoryList" resultType="Category" parameterType="string">
+		select * from downCategory where upCg_code=#{value}
+	</select> -->
+	<insert id="productInsert" parameterType="Product">
+		insert into product values(product_seq.nextval,#{upCg_code},
+		#{downCg_code},#{pname},#{pimage1:VARCHAR},#{pimage2:VARCHAR},#{pimage3:VARCHAR},
+		#{price},#{saleprice:NUMERIC},#{pqty:NUMERIC},#{point:NUMERIC},#{pspec:VARCHAR},
+		#{pcontents:VARCHAR},#{pcompany:VARCHAR},sysdate)
+	</insert>
+	<select id="getProductList" resultType="Product">
+		select up.upCg_code, up.upCg_name, d.downCg_code, d.downCg_name, p.*
+		from upCategory up right outer join product p
+		on up.upCg_code = p.upCg_code
+		left outer join downCategory d
+		on p.downCg_code = d.downCg_code order by 1 asc, 3 asc
+	</select>
+	<select id="getProductCount" resultType="_int">
+		select count(pnum) from product
+	</select>
+	<sql id="product_column">
+		pnum, upCg_code,downCg_code, pname,
+		nvl(pimage1, 'noimage.JPG') pimage1,
+		nvl(pimage1, 'noimage.JPG') pimage2,
+		nvl(pimage1, 'noimage.JPG') pimage3,
+		price, saleprice,pqty,point,pspec,
+		pcontents,pcompany,pindate
+	</sql>
+	<!-- 상품번호로 상품정보 가져오기 -->
+	<select id="selectByPnum" resultType="Product" parameterType="_int">
+		select 
+		<include refid="product_column"/>
+		from product where pnum=#{value}
+	</select>
+	<delete id="productDelete" parameterType="string">
+		delete from product where pnum=#{pnum} 
+	</delete>
+</mapper>

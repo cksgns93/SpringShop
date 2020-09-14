@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tis.mapper.CartMapper">
+	<!-- myshop 계정의 테이블수를 가져오는 쿼리문을 써보자 -->
+	<!-- <select id="tableCount" resultType="int">
+		select count(*) from cart
+	</select> -->
+	
+	<!-- 장바구니에 상품추가 -->
+	<insert id="addCart" parameterType="Cart">
+		insert into cart(cartNum, pnum, idx, oqty,indate)
+		values(cart_seq.nextval,#{pnum},#{idx},#{oqty},sysdate)
+	</insert>
+	<!-- 장바구니에 있는 특정 상품 갯수 알아내기 -->
+	<select id="selectCartByPnum" resultType="_int" parameterType="Cart">
+		select count(*) from cart where idx=#{idx} and pnum=#{pnum}
+	</select>
+	<!-- 장바구니 수량 수정 -->
+	<update id="updateCartOqty" parameterType="Cart">
+		update cart set oqty = oqty + #{oqty} where idx=#{idx} and pnum=#{pnum}
+	</update>
+	<!-- 특정 회원의 장바구니 목록 가져오기 -->
+	<select id="selectCartView" parameterType="int" resultType="Cart">
+		select * from cartView where idx=#{idx} order by cartNum desc
+	</select>
+	
+	<select id="selectCartByIdx_old" parameterType="int" resultType="Cart">
+		<!--select * from cart where idx=#{idx} order by cartNum desc  -->
+		select cartNum, c.pnum, p.pname, p.pimage1, p.price, p.saleprice, 
+		c.oqty, p.point,(saleprice * oqty) totalPrice, (point * oqty) totalPoint
+		from cart c join product p
+		on c.pnum = p.pnum 
+		where idx=#{idx}
+		order by cartNum desc
+	</select>
+	<!--특정 회원의 장바구니 총액과 총포인트 가져오기 -->
+	<select id="getCartTotal" parameterType="int" resultType="Cart">
+		select sum(totalPrice) cartTotalPrice, sum(totalPoint) cartTotalPoint
+		from cartView where idx=#{idx}
+	</select>
+	<select id="getCartTota_oldl" parameterType="int" resultType="Cart">
+		select sum(saleprice*oqty) cartTotalPrice, sum(point*oqty) cartTotalPoint
+		from cart c join product p
+		on c.pnum = p.pnum 
+		where idx=#{idx}
+	</select>
+	<!-- 장바구니에 상품 삭제 -->
+	<delete id="delCart" parameterType="int">
+		delete from cart where cartNum=#{cartNum}
+	</delete>
+	<!-- 장바구니 수량 수정 -->
+	<update id="editCart" parameterType="Cart">
+		update cart set oqty=#{oqty} where cartNum=#{cartNum}
+	</update>
+</mapper>
