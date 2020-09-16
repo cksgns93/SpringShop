@@ -1,8 +1,10 @@
-package com.shop.service;
+package com.tis.service;
 
 import java.util.List;
 
-import com.shop.domain.OrderVO;
+import com.tis.domain.OrderVO;
+
+//import com.tis.domain.OrderVO;
 
 public interface OrderService {
 	//주문개요 정보와 주문상품정보, 수령자 정보를 insert하는 메소드
@@ -13,7 +15,7 @@ public interface OrderService {
 	List<OrderVO> getOrderDesc(String onum);
 	
 	//회원번호로 회원의 주문한 목록을 가져오는 메소드
-	List<OrderVO> getUserOrderList(int midx_fk);
+	List<OrderVO> getUserOrderList(int idx_fk);
 
 
 }

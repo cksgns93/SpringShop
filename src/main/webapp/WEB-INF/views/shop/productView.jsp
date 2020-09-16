@@ -38,6 +38,7 @@
 								<form name="frm" id="frm" method="GET">
 									<!-- 상품번호를 hidden으로 넘기자------ -->
 									<input type="hidden" name="pnum" value="${prod.pnum}">
+									<input type="hidden" name="opnum" value="${prod.pnum}">
 									<!-- -------------------------------- -->
 									<label for="oqty">상품갯수</label> <input type="number" name="oqty"
 										id="oqty" min="1" max="50" size="2" value="1">
@@ -73,7 +74,7 @@
 		frm.submit();
 	}
 	var goOrder=function(){
-		frm.action="user/order";
+		frm.action="user/orderSheet";
 		frm.submit();
 	}
 	var goWish=function(){

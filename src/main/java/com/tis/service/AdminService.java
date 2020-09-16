@@ -1,11 +1,9 @@
-package com.shop.service;
+package com.tis.service;
 
 import java.util.List;
 
-import com.shop.domain.CategoryVO;
-import com.shop.domain.OrderVO;
-import com.shop.domain.ProductVO;
-import com.shop.domain.SumVO;
+import com.tis.domain.CategoryVO;
+import com.tis.domain.ProductVO;
 
 public interface AdminService {
 
@@ -26,9 +24,9 @@ public interface AdminService {
 
 	List<ProductVO> listProduct(int start, int end);
 
-	List<OrderVO> getOrderListByMonth(String month);
+//	List<OrderVO> getOrderListByMonth(String month);
 	void manageOrder(String onum, String colName, String colVal);
-	List<SumVO> getSumYear();
-	List<SumVO> getSumMonth(String year);
+//	List<SumVO> getSumYear();
+//	List<SumVO> getSumMonth(String year);
 	int getUserSumPoint(int midx_fk);
 }

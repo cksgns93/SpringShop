@@ -3,8 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
-<jsp:include page="/top.jsp" />
-
+<c:import url="/top"/>
 <script>
 	function selectDCate(upCode){
 		//alert(upCode);
@@ -73,16 +72,8 @@
 				$('#saleprice').select();
 				return false;
 			}
-			
-			
-			
-			
-			
-			
-			
 		})
 	})
-	
 	
 </script>
 
@@ -92,7 +83,7 @@
 
 			<h1>상품 등록[ADMIN모드]</h1>
 			
-			<form name="prodF" id="prodF" action="prodInsert.do" method="POST"
+			<form name="prodF" id="prodF" action="prodInsert" method="POST"
 				enctype="multipart/form-data">
 				<table class="table table-condensed table-bordered mt-4">
 					<thead>
@@ -199,9 +190,7 @@
 <script>
 	
 </script>
-
-<jsp:include page="/foot.jsp" />
-
+<c:import url="/foot"/>
 
 
 

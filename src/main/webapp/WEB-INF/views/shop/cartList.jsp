@@ -7,7 +7,7 @@
 
 <h1 class="text-success text-center">${loginUser.name} [${loginUser.userid}]님 장바구니</h1>
 <!-- 주문 폼 시작--------------------- -->
-<form name="orderF" id="orderF" action="order.do">
+<form name="orderF" id="orderF" action="orderSheet">
 	<table class="table table-striped">
 		<thead>
 		<tr class="info">
@@ -31,7 +31,7 @@
 		<tr>
 			<td>
 			<label>
-				<input type="checkbox" name="pnum" id="pnum${st.count}" value="${cp.pnum}">${cp.pnum}
+				<input type="checkbox" name="opnum" id="pnum${st.count}" value="${cp.pnum}">${cp.pnum}
 			</label>
 			</td>
 			<td>
@@ -75,7 +75,7 @@
 				</span> point</h5>
 			</td>
 			<td colspan="3">
-				<button type="submit" class="btn btn-warning">주문하기</button>
+				<button type="button" onclick="goOrder()" class="btn btn-warning">주문하기</button>
 				<button type="button" class="btn btn-success" 
 				onclick="location.href='../index.do'">계속쇼핑</button>
 			</td>
@@ -98,6 +98,34 @@
 </form>
 <!-- ---------------------------- -->
 <script>
+	/*체크박스에 체크한 상품(상품번호,주문수량)을 가지고 주문 폼 페이지로 이동*/
+	function goOrder(){
+		//1. 장바구니에 담긴 상품이 없는 경우
+		var chk=$('input[name="opnum"]');
+		if(chk.length==0){
+			return;
+		}
+		//2. 담긴 상품이 있다면 체크박스 갯수 만큼 반복문 돌면서 체크한 상품과 체크 안된 상품을 구분하여, 체크 안된 상품의 주문 수량은 서버쪽에 적송되지 않도록 disabled 처리한다.
+		var cnt =0;
+		$.each(chk,function(i,ch){
+			if($(ch).is(":checked")){
+				cnt++;
+				$('#oqty'+(i+1)).prop('disabled',false);//비활성화
+			}else{
+				//체크 안된 상품의 주문 수량 비활성화 
+				$('#oqty'+(i+1)).prop('disabled',true);//비활성화
+			}
+		});
+
+		if(cnt==0){
+			alert('주문할 상품을 체크하세요');
+			$('input[name="oqty"]').prop('disabled',false);//비활성화
+			return;	
+		}
+		orderF.submit();
+	}
+
+	
 	function cartEdit(num,count){
 		//alert(num+"/"+count);
 		ef.cartNum.value=num;

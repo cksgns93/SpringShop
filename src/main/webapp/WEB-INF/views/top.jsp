@@ -53,19 +53,15 @@
 						href="<%=myctx%>/logout">Logout</a></li>
 				</c:if>
 				<li class="nav-item"><a class="nav-link"
-					href="<%=myctx%>/board/write.do">Board Write</a></li>
-				<li class="nav-item"><a class="nav-link"
-					href="<%=myctx%>/board/list.do">Board List</a></li>
-				<li class="nav-item"><a class="nav-link"
 					href="<%=myctx%>/admin/users">Users[admin]</a></li>
 				<li class="nav-item"><a class="nav-link"
 					href="<%=myctx%>/user/cartList">cart</a></li>
 				<li class="nav-item"><a class="nav-link"
-					href="<%=myctx%>/pspec.do">pspec</a></li>
+					href="<%=myctx%>/pspec">pspec</a></li>
 				<li class="nav-item"><a class="nav-link"
-					href="<%=myctx%>/admin/prodForm.do">상품등록</a></li>	
+					href="<%=myctx%>/admin/prodForm">상품등록</a></li>	
 				<li class="nav-item"><a class="nav-link"
-					href="<%=myctx%>/admin/prodList.do">상품목록</a></li>	
+					href="<%=myctx%>/admin/prodList">상품목록</a></li>	
 			</ul>
 		</nav>
 		<!-- navbar  -->

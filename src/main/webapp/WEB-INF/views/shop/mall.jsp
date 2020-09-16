@@ -1,7 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<jsp:include page="/top.jsp"/>
-	<jsp:include page="/shop/mallHit.jsp"/>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<c:import url="/top"/>
+	<c:import url="/shop/mallHit"/>
 	<br><br>
-	<jsp:include page="/shop/mallNew.jsp"/>
-<jsp:include page="/foot.jsp"/>
+	<br>
+	<c:import url="/shop/mallNew"/>
+<c:import url="/foot"/>
