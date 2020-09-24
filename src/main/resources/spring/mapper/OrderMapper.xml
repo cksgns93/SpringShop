@@ -2,7 +2,81 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="common.tis.OrderMapper">
+<mapper namespace="com.tis.mapper.OrderMapper">
+	<!-- 주문 개요 정보 insert -->
+	<insert id="orderDescInsert" parameterType="com.tis.domain.OrderVO">
+		insert into orderDesc
+		values(#{onum},#{idx_fk},#{ototalPrice},#{ototalPoint},#{opayState},#{odeliver},#{odeliverPrice},sysdate,#{orderMemo:VARCHAR}
+		,#{opayWay},#{opointUse:NUMERIC})
+	</insert>
+	<!-- 주문상품 정보 insert -->
+	<insert id="orderProductInsert_old" parameterType="Product">
+		insert into order_product(pnum_fk,onum,saleprice,opoint,
+		oqty,pimage) values(#{pnum},#{onum},#{saleprice},#{point},#{pqty},#{pimage1})
+	</insert>
 	
-
+	<!-- 주문정보 insert하되 foreach 태그로 한꺼번에 삽입해보자 -->
+	<insert id="orderProductInsert" parameterType="hashmap">
+		<foreach collection="orderList" item="prod" index="index" open="INSERT ALL" separator=" " close="SELECT * FROM DUAL">
+			 into order_product
+			 values(#{prod.pnum},#{onum},#{prod.saleprice},#{prod.point},#{prod.pqty},#{prod.pimage1})
+		</foreach>
+	</insert>
+	<insert id="receiverInsert" parameterType="com.tis.domain.OrderVO">
+		insert into receiver(onum, name, hp1,hp2,hp3,zipcode,addr1,addr2)
+		values(#{onum},#{receiver.name},#{receiver.hp1},#{receiver.hp2},#{receiver.hp3},#{receiver.zipcode},
+		#{receiver.addr1},#{receiver.addr2})
+	</insert>
+	<!-- 주문번호로 주문 상세 내역 정보 가져오기 -->
+	<!-- <select id="getOrderDesc" parameterType="string" resultType="Order"> 여러개의 VO타입이 존재해서 안됨-->
+	<select id="getOrderDesc" parameterType="string" resultMap="OrderJoin">
+	select a.onum, idx_fk,ototalprice,ototalpoint,odeliver,opaystate,odeliverPrice,
+	opayway,orderdate,opointuse,ordermemo, b.pnum_fk, 
+	(select pname from product where pnum = b.pnum_fk ) pname, oqty,
+	b.saleprice, b.opoint, b.pimage,name,hp1,hp2,hp3,zipcode,addr1,addr2
+	from orderDesc a join order_product b
+	on a.onum = b.onum
+	join receiver c
+	on b.onum = c.onum and a.onum=#{onum}
+	</select>
+	
+	<!-- Join절에 사용할 매핑정보. DB에서 가져오는 컬럼명과 VO객체의 프로퍼티명을 매핑해주자. -->
+	<resultMap type="Order" id="OrderJoin">
+	<!-- property는 빈객체의 프로퍼티명, column은 DB의 컬럼명을 적는다. -->
+		<id property="onum" column="onum" /> <!-- id엘리먼트에는 primary key컬럼을 지정한다.-->
+		
+		<result property="idx_fk" column="idx_fk"/>
+		<result property="ototalPrice" column="ototalPrice"/>
+		<result property="ototalPoint" column="ototalPoint"/>
+		<result property="odeliver" column="odeliver"/>
+		<result property="odeliverPrice" column="odeliverPrice"/>
+		<result property="opayState" column="opayState"/>
+		<result property="opayWay" column="opayWay"/>
+		<result property="orderDate" column="orderDate"/>
+		<result property="opointUse" column="opointUse"/>
+		<result property="orderMemo" column="orderMemo"/>
+		
+		<!-- OrderVO has a ReceiverVO 단일 엘리먼트 일때=association-->
+		<association property="receiver" javaType="Receiver">
+			<id property="onum" column="onum"/>
+			<result property="name" column="name"/>
+			<result property="hp1" column="hp1"/>
+			<result property="hp2" column="hp2"/>
+			<result property="hp3" column="hp3"/>
+			<result property="zipcode" column="zipcode"/>
+			<result property="addr1" column="addr1"/>
+			<result property="addr2" column="addr2"/>
+		</association>
+		
+		<!-- OrderVO has List<ProductVO> 다중 엘리먼트 일때=collection-->
+		<collection property="orderList" javaType="java.util.ArrayList" ofType="Product">
+			<result property="pnum" column="pnum_fk" />
+			<result property="pname" column="pname" />
+			<result property="pimage1" column="pimage" />
+			<result property="pqty" column="oqty" />
+			<result property="saleprice" column="saleprice" />
+			<result property="point" column="opoint" />
+		</collection>
+		
+	</resultMap>
 </mapper>

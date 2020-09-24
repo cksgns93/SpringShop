@@ -19,7 +19,7 @@ public class OrderVO {
 	private Date orderDate;//주문날짜
 	private String orderMemo;//요청사항
 	private String opayWay;//지불방법(100:무통장 입금, 200:카드결제)
-	private int opointUser;//사용포인트
+	private int opointUse;//사용포인트
 	
 	
 	//orderProduct관련 property

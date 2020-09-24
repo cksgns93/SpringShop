@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.tis.domain.NotUserException;
+import com.tis.domain.OrderVO;
 import com.tis.domain.UserVO;
 //UserMapper.xml에 네임스페이스는 com.tis.mapper.UserMapper로 주어야 한다.
 public interface UserMapper {
@@ -21,4 +22,6 @@ public interface UserMapper {
 	int updateMileage(Map<String, Integer> map);
 	int getUserCount();
 	int deleteUser(int idx);
+	void updateMileageDown(OrderVO ovo);
+	void updateMileageUp(OrderVO ovo);
 }

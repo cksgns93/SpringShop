@@ -63,12 +63,13 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
 		<span style="font-size:1.5em;color:blue">배송비: 3,000원</span>
 		</td>
 		<td colspan="3" align="right">주문총금액: 
-		<h2 class="text-primary" id="total">
+		<h2 class="text-primary">
 		<fmt:formatNumber value="${totalBuy}" pattern="###,###" />원
 		</h2><br/>
-		[<font color=blue><b> ${totalBuyPoint}</b></font>]POINT<br/>
-		<h1 class="text-danger">
-		결제금액:
+		적립 포인트: [<font color=blue><b> ${totalBuyPoint}</b></font>]POINT<br/>
+		결제금액(총구매가격+배송비-사용포인트) : 
+		<div class="text-warning" id="usePoint" style="font-weight:bold"></div>
+		<h1 class="text-danger" id="total">결제금액:
 		<fmt:formatNumber value="${totalBuy+3000}" pattern="###,###"/>원
 		</h1>
 		</td>
@@ -98,11 +99,11 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
 	                 class="text-right" value="0"
 	                size="10" oninput="chkPoint(this,'${mileage}')" >
 	                 원 (사용가능 적립금 :<span style="color:red;font-weight:bold">${mileage}  원</span> 
-	                 <input type="checkbox"
-	                 onclick="useAllPoint('ㅁ')" >전부사용하기)
+	                 <input type="checkbox" id="chkAll"
+	                 onclick="useAllPoint('${mileage}')" >전부사용하기)
 	                <input type="button" class="btn btn-success"
 	                value="사용하기" 
-	                onclick="" >				
+	                onclick="calcToPrice(opointUse.value,'${totalBuy}')" >				
                 </p>                 
                 <p>
 					적립금은 최소 0 이상일 때 결제가 가능합니다.
@@ -180,8 +181,8 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
 	<tr>
 		<td><b>결제방법</b></td>
 		<td class="text-left">
-			<input type="radio" name="opayWay" checked value="100" onclick="showSelect(this.value)">무통장입금
-			<input type="radio" name="opayWay" value="200"  onclick="showSelect(this.value)">카드 결제
+			<input type="radio" id="opayWay" name="opayWay" checked value="100" onclick="showSelect(this.value)">무통장입금
+			<input type="radio" id="opayWay" name="opayWay" value="200"  onclick="showSelect(this.value)">카드 결제
 			
 			<span id="c1">
 				<select name="bank" id="bank">
@@ -226,11 +227,36 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
 	}//--------------------------
 	
 	function useAllPoint(mileage){
+		if($('#chkAll').is(':checked')){
+			$('#opointUse').val(mileage);
+		}else{
+			$('#opointUse').val(0);
+			$('#opointUse').select();
+			$('#ototalPrice').val('${totalBuy}');
+			$('#usePoint').html("사용포인트: 0 Point");
+			var str="${totalBuy+3000}";
+			$('#total').text(addCommaNum(parseInt(str)));
+		}
 		
 	}//---------------------------
+
+	function addCommaNum(x){
+		return x.toLocaleString();
+	}
+
 	
 	function calcToPrice(usePoint, totalBuy){
-		
+		//alert(usePoint+"/"+totalBuy);
+		var price = totalBuy-usePoint;//총구매 가격에서 사용 포인트 차감
+		if(price<0){
+			alert('총구매가격보다 사용 포인트가 커요. \n사용포인트를 다시 입력하세요')
+			$('#opointUse').select();
+			return;
+		}
+		$('#ototalPrice').val(price);
+		$('#usePoint').html("사용 포인트: "+usePoint+" POINT");
+		var str=addCommaNum(price+3000);
+		$('#total').html(str+"원");
 	}//---------------------------
 	
 

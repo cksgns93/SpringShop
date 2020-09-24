@@ -5,6 +5,8 @@ import java.sql.Date;
 
 public class ProductVO implements Serializable {
 
+	private String onum; //주문처리시 필요. 주문번호
+	
 	private String pnum;
 	
 	private String upCg_code;
@@ -51,6 +53,14 @@ public class ProductVO implements Serializable {
 		this.pcontents = pcontents;
 		this.pcompany = pcompany;
 		this.pindate = pindate;
+	}
+
+	public String getOnum() {
+		return onum;
+	}
+
+	public void setOnum(String onum) {
+		this.onum = onum;
 	}
 
 	public String getPnum() {

@@ -55,6 +55,10 @@
 				<li class="nav-item"><a class="nav-link"
 					href="<%=myctx%>/admin/users">Users[admin]</a></li>
 				<li class="nav-item"><a class="nav-link"
+				href="<%=myctx%>/board/write">boardwrite</a></li>
+				<li class="nav-item"><a class="nav-link"
+					href="<%=myctx%>/board/list">boardlist</a></li>
+				<li class="nav-item"><a class="nav-link"
 					href="<%=myctx%>/user/cartList">cart</a></li>
 				<li class="nav-item"><a class="nav-link"
 					href="<%=myctx%>/pspec">pspec</a></li>

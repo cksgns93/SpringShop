@@ -42,8 +42,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserVO getUser(int idx) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.userMapper.getUser(idx);
 	}
 
 	@Override

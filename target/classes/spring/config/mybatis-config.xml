@@ -10,6 +10,8 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		<typeAlias type="com.tis.domain.UserVO" alias="User"/>
 		<typeAlias type="com.tis.domain.OrderVO" alias="Order"/>
 		<typeAlias type="com.tis.domain.ReceiverVO" alias="Receiver"/>
+		<typeAlias type="com.tis.domain.BoardVO" alias="Board"/>
+		<typeAlias type="com.tis.domain.PagingVO" alias="Paging"/>
 	</typeAliases>
 	
 	<!-- mapper파일 등록 -->
@@ -19,5 +21,6 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		<mapper resource="spring/mapper/CartMapper.xml"/>
 		<mapper resource="spring/mapper/UserMapper.xml"/>
 		<mapper resource="spring/mapper/OrderMapper.xml"/>
+		<mapper resource="spring/mapper/BoardMapper.xml"/>
 	</mappers>
 </configuration>
